@@ -34,7 +34,44 @@ except:
 
 ## Name to check in list and click on
 ## OnePlus Nord CE 5G (Charcoal Ink, 8GB RAM, 128GB Storage)
-product_name = "OnePlus Nord CE 5G (Charcoal Ink, 8GB RAM, 128GB Storage)"
+expected_product_name = "OnePlus Nord CE 5G (Charcoal Ink, 8GB RAM, 128GB Storage)"
+    ###################################################################
+    #### A try to locate element from other element but failed  #######
+    ###################################################################
+    # search_products_list = driver.find_elements_by_xpath('//div[@data-component-type="s-search-result"]')
+    # print("Total products returned: ",len(search_products_list))
+    # for item in search_products_list:
+    #     product_name_from_list = item.find_element_by_xpath("//child::span[@class='a-size-medium a-color-base a-text-normal']").text
+    #     print(product_name_from_list)
+    #     if product_name_from_list.find(expected_product_name) != -1:
+    #         item.click()
+    #         print("Element was found and clicked")
+
+    #         try:
+    #             pass
+    #         except:
+    #             pass
+
+    #     else:
+    #         print("No element was")
+
+search_products_list = driver.find_elements_by_xpath('//div[@data-component-type="s-search-result"]//child::span[@class="a-size-medium a-color-base a-text-normal"]')
+print("Total products returned: ",len(search_products_list))
+for item in search_products_list:
+    product_name_from_list = item.text
+    print(product_name_from_list)
+    if product_name_from_list.find(expected_product_name) != -1:
+        item.click()
+        print("Element was found and clicked")
+
+        try:
+            pass
+        except:
+            pass
+
+    else:
+        print("No element was found")
+
 
 
 print("Automation completed")
