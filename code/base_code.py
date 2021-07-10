@@ -78,6 +78,7 @@ for item in search_products_list:
             pass
         except:
             pass
+        break
 
     else:
         print("No element was found")
@@ -96,4 +97,4 @@ driver.switch_to.window(original_window)
 
 driver.implicitly_wait(10)
 print("Automation completed")
-driver.close()
+# driver.close()
