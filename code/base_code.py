@@ -9,6 +9,8 @@ driver = webdriver.Firefox()
 url = "https://www.amazon.in"
 driver.get(url)
 
+#Set Wait for later
+wait =  WebDriverWait(driver, 10)
 
 ## Validation
 page_title = driver.title
@@ -55,15 +57,23 @@ expected_product_name = "OnePlus Nord CE 5G (Charcoal Ink, 8GB RAM, 128GB Storag
     #     else:
     #         print("No element was")
 
+# Store the ID of the original window
+original_window = driver.current_window_handle
+
+# Check we don't have other windows open already
+assert len(driver.window_handles) == 1
+
+
 search_products_list = driver.find_elements_by_xpath('//div[@data-component-type="s-search-result"]//child::span[@class="a-size-medium a-color-base a-text-normal"]')
 print("Total products returned: ",len(search_products_list))
 for item in search_products_list:
     product_name_from_list = item.text
-    print(product_name_from_list)
+    # print(product_name_from_list)                 # Was used for debug
     if product_name_from_list.find(expected_product_name) != -1:
         item.click()
         print("Element was found and clicked")
-
+        # Wait for new window or tab to open
+        wait.until(EC.number_of_windows_to_be(2))
         try:
             pass
         except:
@@ -72,7 +82,18 @@ for item in search_products_list:
     else:
         print("No element was found")
 
+# Find new window / tab and switch to it
+for window_item in driver.window_handles:
+    if window_item != original_window:
+        driver.switch_to.window(window_item)
 
+wait.until(EC.presence_of_element_located((By.XPATH,"//div[@id='rightCol']/descendant::input[@id='add-to-cart-button']")))
+add_item_to_the_cart = driver.find_element_by_xpath("//div[@id='rightCol']/descendant::input[@id='add-to-cart-button']")
+add_item_to_the_cart.click()
 
+driver.close()
+driver.switch_to.window(original_window)
+
+driver.implicitly_wait(10)
 print("Automation completed")
 driver.close()
