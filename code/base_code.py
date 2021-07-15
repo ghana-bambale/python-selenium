@@ -36,7 +36,7 @@ except:
 
 ## Name to check in list and click on
 ## OnePlus Nord CE 5G (Charcoal Ink, 8GB RAM, 128GB Storage)
-expected_product_name = "OnePlus Nord CE 5G (Charcoal Ink, 8GB RAM, 128GB Storage)"
+expected_product_name = "OnePlus Nord CE 5G (Charcoal Ink, 12GB RAM, 256GB Storage)"
     ###################################################################
     #### A try to locate element from other element but failed  #######
     ###################################################################
@@ -96,5 +96,22 @@ driver.close()
 driver.switch_to.window(original_window)
 
 driver.implicitly_wait(10)
+
+url = "https://www.flipkart.com"
+## Flipkart for hoverover an element
+driver.get(url)
+close_login_popup = "//button[@class='_2KpZ6l _2doB4z']"
+WebDriverWait(driver,10).until(EC.presence_of_element_located((By.XPATH,close_login_popup)))
+driver.find_element_by_xpath(close_login_popup).click()
+fashion_category = driver.find_element_by_xpath("//div[@class='eFQ30H']/descendant::div[contains(text(),'Electronics')]")
+webdriver.ActionChains(driver).move_to_element(fashion_category).perform()
+driver.execute_script ("window.scrollTo(0,250);")
+tablets_categoty = driver.find_element_by_xpath("//a[@class='_6WOcW9' and text()='Tablets']")
+webdriver.ActionChains(driver).move_to_element(tablets_categoty).perform()
+tablets_sub_category = driver.find_element_by_xpath("//a[@class='_6WOcW9 _3YpNQe' and text()='Tablets Without Call Facility']")
+webdriver.ActionChains(driver).move_to_element(tablets_sub_category).perform()
+tablets_sub_category.click()
+driver.implicitly_wait(10)
+
 print("Automation completed")
-# driver.close()
+driver.close()
